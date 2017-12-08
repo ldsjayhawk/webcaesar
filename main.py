@@ -39,7 +39,7 @@ form = """
 
 @app.route("/")
 def index():
-    return form
+    return form.format(...)
 
 @app.route("/hello", methods=['POST'])
 def hello():
@@ -48,11 +48,13 @@ def hello():
 
 @app.route("/form", methods=['POST'])
 def encrypt():
-    rot = request.form['rot']
+    rot = int(request.form['rot'])
+    #integer = int(request.form['variable_from_form'])
+    text = request.form['text']
     letter2 = ""
     for letter in text:
-        new_letter = rotate_string(text, rot)
+        new_letter = rotate_string(letter, rot)
         letter2 = letter2 + new_letter
-    return '<h1> ' + letter2 + '</h1>'
-
+    #return '<h1> ' + letter2 + '</h1>'
+    return form.format(letter2)
 app.run()
