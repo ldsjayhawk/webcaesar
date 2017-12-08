@@ -4,52 +4,55 @@ from caesar import rotate_string
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+form = """
+<!DOCTYPE html>
 
-def form_input():
-    
-form = """     
-<!doctype html>
 <html>
     <head>
         <style>
-            form {
-                background-color:#eee;
+            form {{
+                background-color: #eee;
                 padding: 20px;
                 margin: 0 auto;
                 width: 540px;
-                font: 16px;
+                font: 16px sans-serif;
                 border-radius: 10px;
-            }
-            textarea{
+            }}
+            textarea {{
                 margin: 10px 0;
                 width: 540px;
                 height: 120px;
-            }
+            }}
         </style>
     </head>
     <body>
-        <form action="/form" method="post" >
-        <label>Rotate by:
-            <input name="rot" type="text" value="0"/>
-        </label>
-        <textarea name="text"></textarea>
-        <input type="submit">
-        </form>
+        <form action="/form" method="post"/>
+            <label>Rotate by:
+                <input name="rot" type="text" value="0"/>
+            </label>
+            <textarea name="text">{0}</textarea>
+            <input type="submit">
+            </form>
     </body>
 </html>
 """
 
-@app.route("/encrypt", methods=['POST'])
+@app.route("/")
+def index():
+    return form
+
+@app.route("/hello", methods=['POST'])
+def hello():
+    first_name = request.form['first_name']
+    return '<h1>Hello, ' + first_name + '</h1>'
+
+@app.route("/form", methods=['POST'])
 def encrypt():
     rot = request.form['rot']
     letter2 = ""
     for letter in text:
-        new_letter = rotate_string(letter, rot)
+        new_letter = rotate_string(text, rot)
         letter2 = letter2 + new_letter
-    return letter2
-
-@app.route("/form")
-def index():
-    return form
+    return '<h1> ' + letter2 + '</h1>'
 
 app.run()
